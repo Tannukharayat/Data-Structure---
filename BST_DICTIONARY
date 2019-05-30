@@ -1,0 +1,212 @@
+#include<bits/stdc++.h>
+using namespace std;
+class node
+{
+	public:
+	string word;
+	string meaning;
+	node *left,*right;
+	node()
+	{
+		word='\0';
+		meaning='\0';
+		left=right=NULL;
+	}
+};
+class bstDictionary
+{
+	public:
+	node *root,*head;
+	bstDictionary()
+	{
+	  root=NULL;
+		head=NULL;
+	}
+	void insert1()
+	{
+		int n;
+		string w,m;
+		cout<<"\n How many data to be inserted:- ";
+		cin>>n;
+		for(int i=0;i<n;i++)
+		{
+			cout<<"\n enter the word amd meaning:- ";
+			cin>>w>>m;
+				root=insert(root,w,m);
+		}
+	}
+	node* insert(node*,string,string);
+	void dele1()
+	{
+			int n;
+		string w;
+		cout<<"\n How many data to be deleted:- ";
+		cin>>n;
+		for(int i=0;i<n;i++)
+		{
+			cout<<"\n enter the word:- ";
+			cin>>w;
+				root=dele(root,w);
+		}
+	}
+	node* minval(node*);
+	node* dele(node*,string);
+	int search(node*);
+	void update(node*);
+	void ascending(node*);
+};
+
+node* bstDictionary::insert(node *t,string w,string m)
+{
+	if(t==NULL)
+	{
+		(t)=new node;
+		(t)->word=w;
+		(t)->meaning=m;
+		(t)->left=(t)->right=NULL;
+		cout<<"\n record inserted succussfully!!!!!!!!!!";
+	}else if((t)->word>w)
+	{
+		t->left=insert(t->left,w,m);
+	}else if((t)->word<w)
+	{
+		t->right=insert(t->right,w,m);
+	}
+	return t;
+}
+
+node* bstDictionary::dele(node *t,string w)
+{
+	if((t)==NULL)
+	{
+		cout<<endl<<"Not Found";
+				return t;
+	}else if(t->word>w)
+	{
+		t->left=dele(t->left,w);
+	}else if((t)->word<w)
+	{
+		t->right=dele(t->right,w);
+	}else
+	{
+		if (t->left == NULL) 
+        { 
+            node *temp = t->right; 
+            free(t); 
+            return temp; 
+        } 
+        else if (t->right == NULL) 
+        { 
+           node *temp = t->left; 
+            free(t); 
+            return temp; 
+        } 
+  
+        node* temp = minval(t->right); 
+  
+      	t->word=temp->word;
+			t->meaning=temp->meaning;
+	   t->right = dele(t->right,w); 
+  
+	}
+	
+	return t;
+}
+node* bstDictionary::minval(node *t)
+{
+	node *tempp=t;
+	while(t->left!=NULL)
+	t=t->left;
+	return t;
+}
+void bstDictionary::ascending(node *t)
+{
+	if(t!=NULL)
+	{
+	    ascending(t->left);
+		cout<<endl<<t->word<<" - "<<t->meaning;
+		ascending(t->right);
+	}
+}
+
+int bstDictionary::search(node *t)
+{
+	string w;
+	cout<<endl<<"Enter the word:- ";
+	cin>>w;
+	if(t==NULL)
+	return 0;
+	while(t!=NULL)
+	{
+		if(w==t->word)
+		{
+			cout<<endl<<t->meaning;
+			return 1;
+			
+		}else
+		if(w<t->word)
+		{
+			t=t->left;
+		}else t=t->right;
+	}
+	return 0;
+}
+void bstDictionary::update(node *t)
+{
+	string w, m;
+	cout<<endl<<"Enter the word:- ";
+	cin>>w;
+	cout<<endl<<"Enter the new meaning:- ";
+	cin>>m;
+	while(t!=NULL)
+	{
+		if(t->word==w)
+		{
+			t->meaning=m;
+			break;
+		}else if(t->word<w)
+		{
+			t=t->right;
+		}else t=t->left;
+	}
+}
+int main()
+{
+	bstDictionary obj;
+	char ch='y';
+	int c;
+		do
+		{
+			cout<<"******DICTIONARY IMPLEMENTATION USING BST TREE*******";
+			cout<<endl<<"1. Insertion";
+			cout<<endl<<"2. Deletion";
+			cout<<endl<<"3. Display Dictionary";
+			cout<<endl<<"4. Update the meaning";
+			cout<<endl<<"5. Search ";
+			cout<<endl<<"Enter ur choice";
+			cin>>c;
+			switch(c)
+			{
+				case 1:obj.insert1();
+				break;
+				case 2:	obj.dele1();
+				break;
+				case 3: if(obj.root==NULL)
+				{
+					cout<<endl<<"Empty Dictionary";
+				}obj.ascending(obj.root);
+				break;
+				case 4: obj.update(obj.root);
+				break;
+				case 5: 
+				if(obj.search(obj.root)==0)
+				{
+					cout<<endl<<"Word doesn't exist";
+				}
+				break;
+			}
+			cout<<endl<<"Do u want to continue(y/n)";
+			cin>>ch;
+		}while(ch=='y');
+		return 0;
+}
