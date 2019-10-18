@@ -37,7 +37,7 @@ class trie
 				}else
 				cout<<"\n Word Inserted Successfully!!!";
 				np->ind.push_back(index);
-	   }
+	        }
 		void display(node *temp,vector<char> v)
 			{
 				for(int i=0;i<26;i++)
@@ -97,9 +97,9 @@ class trie
 						cout<<"\n Not found";
 						return 0;
 					}
-				}
-				int removeword(node *temp,string w)
-				{
+		     }
+		     int removeword(node *temp,string w)
+		     {
 					int i=0;
 					if(search(temp,w)==0)
 					{
@@ -143,7 +143,7 @@ class trie
 					}
 					cout<<"Node Remved successfully!!!";
 					return 0;
-		}
+		     }
 		
 };
 int main()
